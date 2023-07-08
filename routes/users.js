@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -54,7 +53,7 @@ router.post('/refresh', async (req, res) => {
         if (err) {
             return res.sendStatus(403);
         }
-        const accessToken = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1m' });
+        const accessToken = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '15m' });
         res.send({ accessToken });
     });
 });
