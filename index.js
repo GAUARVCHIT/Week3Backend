@@ -9,7 +9,7 @@ const app = express();
 
 app.use(cors());
 
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 app.use(express.json());
 app.use('/users', usersRoutes)
 app.use('/admin', adminRoutes);
