@@ -47,12 +47,13 @@ router.post('/login', async (req, res) => {
         if (!user || !(await bcrypt.compare(password, user.password))) {
             return res.status(401).json({ message: 'Invalid username or password' });
         }
+        const userName = user.username;;
         const accessToken = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '15m' });
         const refreshToken = jwt.sign({ id: user.id, username: user.username }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
         user.refreshToken = refreshToken;
         await user.save();
-        res.json({ accessToken, refreshToken, message: "Logged in successfully" });
+        res.json({ accessToken, refreshToken, userName, message: "Logged in successfully" });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -72,7 +73,8 @@ router.post('/refresh', async (req, res) => {
             return res.sendStatus(403);
         }
         const accessToken = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '15m' });
-        res.send({ accessToken });
+        const userName = user.username;
+        res.send({ accessToken, userName });
     });
 });
 
